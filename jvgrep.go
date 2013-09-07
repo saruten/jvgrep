@@ -68,10 +68,10 @@ func matchedfile(f string) {
 		}
 	}
 	if zeroFile {
-		printstr(f)
+		printstr(filepath.FromSlash(f))
 		os.Stdout.Write([]byte{0})
 	} else {
-		printline(f)
+		printline(filepath.FromSlash(f))
 	}
 }
 
@@ -84,9 +84,9 @@ func matchedline(f string, l int, m string, a *GrepArg) {
 				}
 			}
 			if zeroFile {
-				printstr(fmt.Sprintf("%s:%d\x00", f, l))
+				printstr(fmt.Sprintf("%s:%d\x00", filepath.FromSlash(f), l))
 			} else {
-				printstr(fmt.Sprintf("%s:%d:", f, l))
+				printstr(fmt.Sprintf("%s:%d:", filepath.FromSlash(f), l))
 			}
 		}
 		printline(m)
@@ -99,7 +99,7 @@ func matchedline(f string, l int, m string, a *GrepArg) {
 			}
 		}
 		ct.ChangeColor(ct.Magenta, true, ct.None, false)
-		printstr(f)
+		printstr(filepath.FromSlash(f))
 		ct.ChangeColor(ct.Cyan, true, ct.None, false)
 		if zeroFile {
 			os.Stdout.Write([]byte{0})
@@ -139,7 +139,7 @@ func matchedline(f string, l int, m string, a *GrepArg) {
 			}
 			printstr(m[0:i])
 			ct.ChangeColor(ct.Red, true, ct.None, false)
-			printstr(m[i:i+l])
+			printstr(m[i : i+l])
 			ct.ResetColor()
 			m = m[i+l:]
 		}
@@ -503,13 +503,13 @@ func main() {
 		} else if len(argv[n]) > 1 && argv[n][0] == '-' && argv[n][1] == '-' {
 			name := argv[n][2:]
 			switch {
-			case name == "enc" && n < argc - 1:
+			case name == "enc" && n < argc-1:
 				encs = argv[n+1]
 				n++
-			case name == "exclude" && n < argc - 1:
+			case name == "exclude" && n < argc-1:
 				exclude = argv[n+1]
 				n++
-			case name == "color" && n < argc - 1:
+			case name == "color" && n < argc-1:
 				color = argv[n+1]
 				n++
 			case name == "null":
